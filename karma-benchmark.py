@@ -5,7 +5,7 @@ __author__ = 'denn'
 # Setup
 #
 
-hops         = 10
+hops         = 20
 
 fromAccount  = 'bench-mark2'
 toAccount    = 'bench-mark1'
@@ -13,7 +13,7 @@ walletPasswd = 'prosto-passwd'
 asset        = 'KRMT'
 amount       = '0.001'
 
-from KarmaApi import karma
+from KarmaApi import karma, apis
 from bitshares.block import Block
 from bitshares.account import Account
 
@@ -36,8 +36,12 @@ def transactionBilder():
     return transactions
 
 def transactionExec(transactions):
+    i = 0
     for trx in transactions:
-        karma.rpc.broadcast_transaction(trx, api='network_broadcast')
+        k = i % len(apis)
+        api = apis[k]
+        api.rpc.broadcast_transaction(trx, api='network_broadcast')
+        i += 1
 
 #
 # Test user account
@@ -55,8 +59,12 @@ def testUserAccount():
         block = Block(block_num)
         timestamp = block['timestamp']
         txs       = block['transactions']
+        root      = block['transaction_merkle_root']
+        witness   = block['witness']
 
+        print('block root: ', root, ' witness: ', witness)
         print('id = ', ids, 'trxs = ', trx_in_block, ' block num = ', block_num, ' block[',timestamp,'] = ', len(txs))
+
         i += 1
 
     print('transfers = ', i)

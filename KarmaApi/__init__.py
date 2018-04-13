@@ -18,12 +18,21 @@ known_chains['KarmaTest']['core_symbol']='KRMT'
 known_chains['KarmaTest']['prefix']='KRMT'
 known_chains['KarmaTest']['chain_id']='e81bea67cebfe8612010fc7c26702bce10dc53f05c57ee6d5b720bbe62e51bef'
 
-nodes = ['wss://testnet-node.karma.red/']
+#nodes = ['wss://testnet-node.karma.red/','ws://localhost:8090/']
+nodes = ['ws://localhost:8090/']
 base_node = nodes[0]
 
 wif = '5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3'
-karma = BitShares(base_node,nobroadcast=False, expiration=30000) #, keys={"active": wif, "owner": wif, "memo": wif})
+karma = BitShares(base_node,nobroadcast=False, expiration=30000)
 karma.config.config_defaults['node']=base_node
+
+apis = []
+
+for n in nodes:
+    bts = BitShares(n, nobroadcast=False, expiration=30000)
+    #karma.config.config_defaults['node']=n
+    apis.append(bts)
+
 
 #
 # curl -X POST -H "Content-Type: application/json" -d '{"method":"call","params":[0,"get_chain_properties",[]],"id":1}' "https://testnet-node.karma.red"
