@@ -5,49 +5,57 @@ __author__ = 'denn'
 # Setup
 #
 
-hops         = 20
+hops = 10
 
-fromAccount  = 'bench-mark2'
-toAccount    = 'bench-mark1'
 walletPasswd = 'prosto-passwd'
-asset        = 'KRMT'
-amount       = '0.001'
+asset = 'KRMT'
+amount = '0.01'
 
-from KarmaApi import karma, apis
+from KarmaApi import karma, apis, nodes
 from bitshares.block import Block
 from bitshares.account import Account
 
 import time
 import sys
-
+import threading
 
 karma.wallet.unlock(walletPasswd)
 
 def transactionBilder():
-    transactions = []
 
     print(".", end='')
-    for i in range(0,hops):
-        trx=karma.transferTrx(toAccount, amount, asset, account=fromAccount).json()
-        transactions.append(trx)
-        print(".", end='')
-        sys.stdout.flush()
+    count = 0
+    for n in nodes:
+        for i in range(0, hops):
+            trx = karma.transferTrx(n['from'], amount, asset, account=n['to']).json()
+            n['trx'].append(trx)
+            print(".", end='')
+            sys.stdout.flush()
+            count += 1
 
-    return transactions
+    return  count
 
-def transactionExec(transactions):
-    i = 0
+def transactionExec(transactions, api):
     for trx in transactions:
-        k = i % len(apis)
-        api = apis[k]
+        print('send trx to node: ', api.rpc.url)
         api.rpc.broadcast_transaction(trx, api='network_broadcast')
-        i += 1
+
+def startTransaction():
+    threads = []
+    for n in nodes:
+        api = apis[n['url']]
+        t = threading.Thread(target=transactionExec, args=(n['trx'], api, ))
+        threads.append(t)
+        t.start()
+
+    for t in threads:
+        t.join()
 
 #
 # Test user account
 #
 def testUserAccount():
-    account = Account(toAccount, bitshares_instance=karma, full=True)
+    account = Account('bench-mark', bitshares_instance=karma, full=True)
     print(account.balances)
     hist = account.history(limit=10)
     i = 0
@@ -75,16 +83,14 @@ def runBench():
     #
     print('Trx building', end='')
     t0 = time.time()
-    trx = transactionBilder()
+    count = transactionBilder()
     t1 = time.time()
     print('done')
-
-    count = len(trx)
 
     print('Trx execution...', end='')
     sys.stdout.flush()
     t2 = time.time()
-    transactionExec(trx)
+    startTransaction()
     t3 = time.time()
     print('done')
 
