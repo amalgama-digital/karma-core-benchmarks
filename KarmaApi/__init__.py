@@ -19,21 +19,22 @@ known_chains['KarmaTest']['prefix'] = 'KRMT'
 known_chains['KarmaTest']['chain_id'] = 'e81bea67cebfe8612010fc7c26702bce10dc53f05c57ee6d5b720bbe62e51bef'
 
 nodes = [
-    {'url': 'ws://localhost:8090/', 'from': 'bench-mark',  'to': 'bench-mark1', 'trx': []},
-    {'url': 'ws://localhost:8091/', 'from': 'bench-mark1', 'to': 'bench-mark2', 'trx': []}
+    {'url': 'ws://localhost:8090/', 'from': 'bench-mark',  'to': 'bench-mark1', 'trx': []}, # 1
+    {'url': 'ws://localhost:8091/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 2
+    {'url': 'ws://localhost:8092/', 'from': 'bench-mark3', 'to': 'bench-mark2', 'trx': []}, # 3
+    {'url': 'ws://localhost:8090/', 'from': 'bench-mark2', 'to': 'bench-mark',  'trx': []}, # 4
+    {'url': 'ws://localhost:8091/', 'from': 'bench-mark',  'to': 'bench-mark2', 'trx': []}, # 5
+    {'url': 'ws://localhost:8092/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 6
+    {'url': 'ws://localhost:8090/', 'from': 'bench-mark',  'to': 'bench-mark1', 'trx': []}, # 7
+    {'url': 'ws://localhost:8091/', 'from': 'bench-mark2', 'to': 'bench-mark1', 'trx': []}, # 8
+    {'url': 'ws://localhost:8090/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 9
+    {'url': 'ws://localhost:8092/', 'from': 'bench-mark3', 'to': 'bench-mark2', 'trx': []}, # 10
 ]
 
 base_node = nodes[0]['url']
 
-karma = BitShares(base_node, nobroadcast=False, expiration=30000)
-karma.config.config_defaults['node'] = base_node
-
-apis = {}
-
-for n in nodes:
-    bts = BitShares(n['url'], nobroadcast=False, expiration=30000)
-    print('add node: ', bts.rpc.url)
-    apis[n['url']] = bts
+#karma = BitShares(base_node, nobroadcast=False, expiration=30000)
+#karma.config.config_defaults['node'] = base_node
 
 #
 # curl -X POST -H "Content-Type: application/json" -d '{"method":"call","params":[0,"get_chain_properties",[]],"id":1}' "https://testnet-node.karma.red"
