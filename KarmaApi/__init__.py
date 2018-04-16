@@ -1,6 +1,5 @@
 __author__ = 'denn'
 
-from bitshares import BitShares
 from bitsharesbase.chains import known_chains
 from graphenebase.base58 import known_prefixes
 
@@ -22,19 +21,16 @@ nodes = [
     {'url': 'ws://localhost:8090/', 'from': 'bench-mark',  'to': 'bench-mark1', 'trx': []}, # 1
     {'url': 'ws://localhost:8091/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 2
     {'url': 'ws://localhost:8092/', 'from': 'bench-mark3', 'to': 'bench-mark2', 'trx': []}, # 3
-    {'url': 'ws://localhost:8090/', 'from': 'bench-mark2', 'to': 'bench-mark',  'trx': []}, # 4
-    {'url': 'ws://localhost:8091/', 'from': 'bench-mark',  'to': 'bench-mark2', 'trx': []}, # 5
-    {'url': 'ws://localhost:8092/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 6
-    {'url': 'ws://localhost:8090/', 'from': 'bench-mark',  'to': 'bench-mark1', 'trx': []}, # 7
-    {'url': 'ws://localhost:8091/', 'from': 'bench-mark2', 'to': 'bench-mark1', 'trx': []}, # 8
-    {'url': 'ws://localhost:8090/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 9
-    {'url': 'ws://localhost:8092/', 'from': 'bench-mark3', 'to': 'bench-mark2', 'trx': []}, # 10
+    {'url': 'ws://localhost:8093/', 'from': 'bench-mark2', 'to': 'bench-mark',  'trx': []}, # 4
+    {'url': 'ws://localhost:8094/', 'from': 'bench-mark',  'to': 'bench-mark2', 'trx': []}, # 5
+    {'url': 'ws://localhost:8095/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 6
+    {'url': 'ws://localhost:8096/', 'from': 'bench-mark',  'to': 'bench-mark1', 'trx': []}, # 7
+    {'url': 'ws://localhost:8097/', 'from': 'bench-mark2', 'to': 'bench-mark1', 'trx': []}, # 8
+    {'url': 'ws://localhost:8098/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 9
+    {'url': 'ws://localhost:8099/', 'from': 'bench-mark3', 'to': 'bench-mark2', 'trx': []}, # 10
 ]
 
 base_node = nodes[0]['url']
-
-#karma = BitShares(base_node, nobroadcast=False, expiration=30000)
-#karma.config.config_defaults['node'] = base_node
 
 #
 # curl -X POST -H "Content-Type: application/json" -d '{"method":"call","params":[0,"get_chain_properties",[]],"id":1}' "https://testnet-node.karma.red"

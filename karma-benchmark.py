@@ -14,11 +14,15 @@ import traceback
 # Setup
 #
 
-srcHops = 10
+srcHops = 50
 
 walletPasswd = 'prosto-passwd'
 asset = 'KRMT'
 amount = '0.01'
+
+#
+# Utils
+#
 
 def transactionBilder(apis, nodes):
 
@@ -139,7 +143,14 @@ def runBench(newCount,queue):
         queue.put({'x': n, 'y': tps})
 
 
+#
+# Run test
+#
+
 from multiprocessing import Process, Queue
+import matplotlib.pyplot as plt
+from scipy import stats
+import np
 
 if __name__ == '__main__':
 
@@ -158,21 +169,16 @@ if __name__ == '__main__':
         x.append(p['x'])
         y.append(p['y'])
 
+    slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+
+    x = np.array(x)
+    y = np.array(y)
+
     print(' nodes = ', x, '; tps = ', y, ';')
-
-
-# hops = 10
-# Transaction execution time:  0.016 sec.; rate:  644.861 tps nodes count:  1
-# Transaction execution time:  0.016 sec.; rate:  642.717 tps nodes count:  2
-# Transaction execution time:  0.015 sec.; rate:  600.635 tps nodes count:  3
-# Transaction execution time:  0.012 sec.; rate:  658.279 tps nodes count:  4
-# Transaction execution time:  0.018 sec.; rate:  571.361 tps nodes count:  5
-# Transaction execution time:  0.007 sec.; rate:  835.158 tps nodes count:  6
-# Transaction execution time:  0.008 sec.; rate:  864.423 tps nodes count:  7
-# Transaction execution time:  0.010 sec.; rate:  860.826 tps nodes count:  8
-# Transaction execution time:  0.010 sec.; rate:  919.602 tps nodes count:  9
-# Transaction execution time:  0.012 sec.; rate:  849.410 tps nodes count:  10
-# x = [1,2,3,4,5,6,7,8,9,10]; y = [644.861,642.717,600.635,658.279,571.361,835.158,864.423,860.826,919.602,849.410]
-
-
+    f = 'f(x) = %0.4f + %.4f*x; corr=%.4f, p=%.4f, err=%.4f' % (intercept, slope, r_value, p_value, std_err)
+    print(f)
+    plt.plot(x, y, 'o', label='Measured nodes/tps')
+    plt.plot(x, intercept + slope * x, 'r', label=f)
+    plt.legend()
+    plt.show()
 
