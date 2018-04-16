@@ -18,16 +18,38 @@ known_chains['KarmaTest']['prefix'] = 'KRMT'
 known_chains['KarmaTest']['chain_id'] = 'e81bea67cebfe8612010fc7c26702bce10dc53f05c57ee6d5b720bbe62e51bef'
 
 nodes = [
-    {'url': 'ws://localhost:8090/', 'from': 'bench-mark',  'to': 'bench-mark1', 'trx': []}, # 1
-    {'url': 'ws://localhost:8091/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 2
-    {'url': 'ws://localhost:8092/', 'from': 'bench-mark3', 'to': 'bench-mark2', 'trx': []}, # 3
-    {'url': 'ws://localhost:8093/', 'from': 'bench-mark2', 'to': 'bench-mark',  'trx': []}, # 4
-    {'url': 'ws://localhost:8094/', 'from': 'bench-mark',  'to': 'bench-mark2', 'trx': []}, # 5
-    {'url': 'ws://localhost:8095/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 6
-    {'url': 'ws://localhost:8096/', 'from': 'bench-mark',  'to': 'bench-mark1', 'trx': []}, # 7
-    {'url': 'ws://localhost:8097/', 'from': 'bench-mark2', 'to': 'bench-mark1', 'trx': []}, # 8
-    {'url': 'ws://localhost:8098/', 'from': 'bench-mark3', 'to': 'bench-mark1', 'trx': []}, # 9
-    {'url': 'ws://localhost:8099/', 'from': 'bench-mark3', 'to': 'bench-mark2', 'trx': []}, # 10
+    {'url': 'ws://localhost:8090/', 'from': 'bench-mark10',  'to': 'bench-mark1', 'trx': []}, # 1
+    {'url': 'ws://localhost:8091/', 'from': 'bench-mark13',  'to': 'bench-mark1', 'trx': []}, # 2
+    {'url': 'ws://localhost:8092/', 'from': 'bench-mark13',  'to': 'bench-mark2', 'trx': []}, # 3
+    {'url': 'ws://localhost:8093/', 'from': 'bench-mark12', 'to': 'bench-mark',  'trx': []}, # 4
+    {'url': 'ws://localhost:8094/', 'from': 'bench-mark10',  'to': 'bench-mark2', 'trx': []}, # 5
+    {'url': 'ws://localhost:8095/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []}, # 6
+    {'url': 'ws://localhost:8096/', 'from': 'bench-mark10',  'to': 'bench-mark1', 'trx': []}, # 7
+    {'url': 'ws://localhost:8097/', 'from': 'bench-mark12', 'to': 'bench-mark1', 'trx': []}, # 8
+    {'url': 'ws://localhost:8098/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []}, # 9
+    {'url': 'ws://localhost:8099/', 'from': 'bench-mark13', 'to': 'bench-mark2', 'trx': []}, # 10
+
+    {'url': 'ws://localhost:8090/', 'from': 'bench-mark11', 'to': 'bench-mark', 'trx': []},  # 1
+    {'url': 'ws://localhost:8091/', 'from': 'bench-mark12', 'to': 'bench-mark1', 'trx': []},  # 2
+    {'url': 'ws://localhost:8092/', 'from': 'bench-mark10', 'to': 'bench-mark2', 'trx': []},  # 3
+    {'url': 'ws://localhost:8093/', 'from': 'bench-mark12', 'to': 'bench-mark', 'trx': []},  # 4
+    {'url': 'ws://localhost:8094/', 'from': 'bench-mark11', 'to': 'bench-mark2', 'trx': []},  # 5
+    {'url': 'ws://localhost:8095/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []},  # 6
+    {'url': 'ws://localhost:8096/', 'from': 'bench-mark11', 'to': 'bench-mark3', 'trx': []},  # 7
+    {'url': 'ws://localhost:8097/', 'from': 'bench-mark12', 'to': 'bench-mark1', 'trx': []},  # 8
+    {'url': 'ws://localhost:8098/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []},  # 9
+    {'url': 'ws://localhost:8099/', 'from': 'bench-mark13', 'to': 'bench-mark2', 'trx': []},  # 10
+
+    {'url': 'ws://localhost:8090/', 'from': 'bench-mark11', 'to': 'bench-mark', 'trx': []},  # 1
+    {'url': 'ws://localhost:8091/', 'from': 'bench-mark12', 'to': 'bench-mark1', 'trx': []},  # 2
+    {'url': 'ws://localhost:8092/', 'from': 'bench-mark10', 'to': 'bench-mark2', 'trx': []},  # 3
+    {'url': 'ws://localhost:8093/', 'from': 'bench-mark12', 'to': 'bench-mark', 'trx': []},  # 4
+    {'url': 'ws://localhost:8094/', 'from': 'bench-mark11', 'to': 'bench-mark2', 'trx': []},  # 5
+    {'url': 'ws://localhost:8095/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []},  # 6
+    {'url': 'ws://localhost:8096/', 'from': 'bench-mark11', 'to': 'bench-mark3', 'trx': []},  # 7
+    {'url': 'ws://localhost:8097/', 'from': 'bench-mark12', 'to': 'bench-mark1', 'trx': []},  # 8
+    {'url': 'ws://localhost:8098/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []},  # 9
+    {'url': 'ws://localhost:8099/', 'from': 'bench-mark13', 'to': 'bench-mark2', 'trx': []},  # 10
 ]
 
 base_node = nodes[0]['url']

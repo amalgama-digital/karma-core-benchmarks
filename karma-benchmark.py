@@ -4,6 +4,7 @@ from KarmaApi import nodes as srcNodes
 from bitshares.block import Block
 from bitshares.account import Account
 from bitshares import BitShares
+from bitsharesbase.account import PrivateKey, PasswordKey
 
 import time
 import sys
@@ -36,6 +37,14 @@ def transactionBilder(apis, nodes):
     for n in nodes:
         api = apis[n['url']]
         api.wallet.unlock(walletPasswd)
+
+        try:
+            name = n['from']
+            wif = PasswordKey(name, walletPasswd, role="active").get_private_key()
+            api.wallet.addPrivateKey(wif)
+        except:
+            pass
+
         for i in range(0, hops):
             trx = api.transferTrx(n['to'], amount, asset, account=n['from']).json()
             n['trx'].append(trx)
@@ -46,12 +55,17 @@ def transactionBilder(apis, nodes):
     return count
 
 def transactionExec(transactions, api):
+
     for trx in transactions:
-        print('send trx to node: ', api.rpc.url)
+
         try:
             api.rpc.broadcast_transaction(trx, api='network_broadcast')
         except Exception as err:
-            traceback.print_tb(err.__traceback__)
+            traceback.print_tb(err.__traceback__, err)
+
+        print(".", end='')
+        sys.stdout.flush()
+
 
 def createApis(nodes):
     apis = {}
@@ -79,8 +93,8 @@ def startTransaction(apis, nodes):
 #
 # Test user account
 #
-def testUserAccount():
-    account = Account('bench-mark', bitshares_instance=karma, full=True)
+def testUserAccount(instance):
+    account = Account('bench-mark', bitshares_instance=instance, full=True)
     print(account.balances)
     hist = account.history(limit=10)
     i = 0
@@ -96,7 +110,7 @@ def testUserAccount():
         witness   = block['witness']
 
         print('block root: ', root, ' witness: ', witness)
-        print('id = ', ids, 'trxs = ', trx_in_block, ' block num = ', block_num, ' block[',timestamp,'] = ', len(txs))
+        print('id = ', ids, 'trxs = ', trx_in_block, ' block num = ', block_num, ' block[', timestamp, '] = ', len(txs))
 
         i += 1
 
@@ -116,7 +130,7 @@ def runBenchFor(nodes):
     print('done')
 
 
-    print('Trx execution...', end='')
+    print('Trx execution', end='')
     sys.stdout.flush()
     t2 = time.time()
     startTransaction(apis, nodes)
@@ -150,7 +164,13 @@ def runBench(newCount,queue):
 from multiprocessing import Process, Queue
 import matplotlib.pyplot as plt
 from scipy import stats
+from scipy.optimize import curve_fit
 import np
+
+
+def func(x, a, b, c):
+    return a*np.log2(c+x)+b
+
 
 if __name__ == '__main__':
 
@@ -174,11 +194,24 @@ if __name__ == '__main__':
     x = np.array(x)
     y = np.array(y)
 
+
     print(' nodes = ', x, '; tps = ', y, ';')
     f = 'f(x) = %0.4f + %.4f*x; corr=%.4f, p=%.4f, err=%.4f' % (intercept, slope, r_value, p_value, std_err)
     print(f)
+
+    popt, pcov = curve_fit(func, x, y)
+
+    xdata = np.linspace(x[0], x[-1], 100)
+
+    a = popt[0]
+    b = popt[1]
+    c = popt[2]
+    ex = 'f(x): a= %4.f + %.4f*log2(%.4f+x)' % (b, a, c)
+    print(ex)
+
     plt.plot(x, y, 'o', label='Measured nodes/tps')
     plt.plot(x, intercept + slope * x, 'r', label=f)
+    plt.plot(xdata, func(xdata, *popt), 'b-', label=ex)
+
     plt.legend()
     plt.show()
-
