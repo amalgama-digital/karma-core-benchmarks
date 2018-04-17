@@ -1,6 +1,6 @@
 __author__ = 'denn'
 
-from KarmaApi import nodes as srcNodes
+from KarmaApi import makeNodes, curve_regression
 from bitshares.block import Block
 from bitshares.account import Account
 from bitshares import BitShares
@@ -10,12 +10,17 @@ import time
 import sys
 import threading
 import traceback
+import json
 
 #
 # Setup
 #
 
-srcHops = 50
+
+srcHops = 1
+
+srcNodes = makeNodes(5)
+
 
 walletPasswd = 'prosto-passwd'
 asset = 'KRMT'
@@ -162,15 +167,6 @@ def runBench(newCount,queue):
 #
 
 from multiprocessing import Process, Queue
-import matplotlib.pyplot as plt
-from scipy import stats
-from scipy.optimize import curve_fit
-import np
-
-
-def func(x, a, b, c):
-    return a*np.log2(c+x)+b
-
 
 if __name__ == '__main__':
 
@@ -184,34 +180,15 @@ if __name__ == '__main__':
 
     x = []
     y = []
-    while q.empty() != True :
+
+    while not q.empty():
         p = q.get_nowait()
         x.append(p['x'])
         y.append(p['y'])
 
-    slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
+    linear_file_name = './linear_h:%s_n:%s.json' % (srcHops, len(srcNodes))
 
-    x = np.array(x)
-    y = np.array(y)
+    linear_json = '{"x": %s, "y": %s}' % (json.dumps(x), json.dumps(y))
 
-
-    print(' nodes = ', x, '; tps = ', y, ';')
-    f = 'f(x) = %0.4f + %.4f*x; corr=%.4f, p=%.4f, err=%.4f' % (intercept, slope, r_value, p_value, std_err)
-    print(f)
-
-    popt, pcov = curve_fit(func, x, y)
-
-    xdata = np.linspace(x[0], x[-1], 100)
-
-    a = popt[0]
-    b = popt[1]
-    c = popt[2]
-    ex = 'f(x): a= %4.f + %.4f*log2(%.4f+x)' % (b, a, c)
-    print(ex)
-
-    plt.plot(x, y, 'o', label='Measured nodes/tps')
-    plt.plot(x, intercept + slope * x, 'r', label=f)
-    plt.plot(xdata, func(xdata, *popt), 'b-', label=ex)
-
-    plt.legend()
-    plt.show()
+    with open(linear_file_name, 'w') as file:
+        file.write(linear_json)

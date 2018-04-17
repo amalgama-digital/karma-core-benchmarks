@@ -24,3 +24,6 @@
 # Ignore config files
 /config/database.yml
 /config/secrets.yml
+
+linear_*.json
+curve_*.json

@@ -2,6 +2,8 @@ __author__ = 'denn'
 
 from bitsharesbase.chains import known_chains
 from graphenebase.base58 import known_prefixes
+import np
+import time
 
 known_prefixes.append('KRM')
 known_prefixes.append('KRMT')
@@ -17,42 +19,36 @@ known_chains['KarmaTest']['core_symbol'] = 'KRMT'
 known_chains['KarmaTest']['prefix'] = 'KRMT'
 known_chains['KarmaTest']['chain_id'] = 'e81bea67cebfe8612010fc7c26702bce10dc53f05c57ee6d5b720bbe62e51bef'
 
-nodes = [
-    {'url': 'ws://localhost:8090/', 'from': 'bench-mark10',  'to': 'bench-mark1', 'trx': []}, # 1
-    {'url': 'ws://localhost:8091/', 'from': 'bench-mark13',  'to': 'bench-mark1', 'trx': []}, # 2
-    {'url': 'ws://localhost:8092/', 'from': 'bench-mark13',  'to': 'bench-mark2', 'trx': []}, # 3
-    {'url': 'ws://localhost:8093/', 'from': 'bench-mark12', 'to': 'bench-mark',  'trx': []}, # 4
-    {'url': 'ws://localhost:8094/', 'from': 'bench-mark10',  'to': 'bench-mark2', 'trx': []}, # 5
-    {'url': 'ws://localhost:8095/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []}, # 6
-    {'url': 'ws://localhost:8096/', 'from': 'bench-mark10',  'to': 'bench-mark1', 'trx': []}, # 7
-    {'url': 'ws://localhost:8097/', 'from': 'bench-mark12', 'to': 'bench-mark1', 'trx': []}, # 8
-    {'url': 'ws://localhost:8098/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []}, # 9
-    {'url': 'ws://localhost:8099/', 'from': 'bench-mark13', 'to': 'bench-mark2', 'trx': []}, # 10
+urls = ['ws://localhost']
+ports = [8090, 8091, 8092, 8093, 8094, 8095, 8096, 8097, 8098, 8099]
+accounts = ['bench-mark', 'bench-mark1', 'bench-mark2',
+            'bench-mark3', 'bench-mark10',
+            'bench-mark11', 'bench-mark12',
+            'bench-mark13']
 
-    {'url': 'ws://localhost:8090/', 'from': 'bench-mark11', 'to': 'bench-mark', 'trx': []},  # 1
-    {'url': 'ws://localhost:8091/', 'from': 'bench-mark12', 'to': 'bench-mark1', 'trx': []},  # 2
-    {'url': 'ws://localhost:8092/', 'from': 'bench-mark10', 'to': 'bench-mark2', 'trx': []},  # 3
-    {'url': 'ws://localhost:8093/', 'from': 'bench-mark12', 'to': 'bench-mark', 'trx': []},  # 4
-    {'url': 'ws://localhost:8094/', 'from': 'bench-mark11', 'to': 'bench-mark2', 'trx': []},  # 5
-    {'url': 'ws://localhost:8095/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []},  # 6
-    {'url': 'ws://localhost:8096/', 'from': 'bench-mark11', 'to': 'bench-mark3', 'trx': []},  # 7
-    {'url': 'ws://localhost:8097/', 'from': 'bench-mark12', 'to': 'bench-mark1', 'trx': []},  # 8
-    {'url': 'ws://localhost:8098/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []},  # 9
-    {'url': 'ws://localhost:8099/', 'from': 'bench-mark13', 'to': 'bench-mark2', 'trx': []},  # 10
+def makeNodes(count):
+    np.random.seed(int(time.time()))
 
-    {'url': 'ws://localhost:8090/', 'from': 'bench-mark11', 'to': 'bench-mark', 'trx': []},  # 1
-    {'url': 'ws://localhost:8091/', 'from': 'bench-mark12', 'to': 'bench-mark1', 'trx': []},  # 2
-    {'url': 'ws://localhost:8092/', 'from': 'bench-mark10', 'to': 'bench-mark2', 'trx': []},  # 3
-    {'url': 'ws://localhost:8093/', 'from': 'bench-mark12', 'to': 'bench-mark', 'trx': []},  # 4
-    {'url': 'ws://localhost:8094/', 'from': 'bench-mark11', 'to': 'bench-mark2', 'trx': []},  # 5
-    {'url': 'ws://localhost:8095/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []},  # 6
-    {'url': 'ws://localhost:8096/', 'from': 'bench-mark11', 'to': 'bench-mark3', 'trx': []},  # 7
-    {'url': 'ws://localhost:8097/', 'from': 'bench-mark12', 'to': 'bench-mark1', 'trx': []},  # 8
-    {'url': 'ws://localhost:8098/', 'from': 'bench-mark13', 'to': 'bench-mark1', 'trx': []},  # 9
-    {'url': 'ws://localhost:8099/', 'from': 'bench-mark13', 'to': 'bench-mark2', 'trx': []},  # 10
-]
+    nodes = []
+    for i in range(0,count):
+        url = urls[int(np.random.randint(len(urls)))]
+        port = ports[ np.random.randint(len(ports))]
+        url = '%s:%s' % (url, port)
+        _from = accounts[int(np.random.randint(len(accounts)))]
+        _to = accounts[int(np.random.randint(len(accounts)))]
+        while _to == _from:
+            _to = accounts[int(np.random.randint(len(accounts)))]
 
-base_node = nodes[0]['url']
+        n = {'url': url, 'from': _from, 'to': _to, 'trx': []}
+        nodes.append(n)
+
+    return nodes
+
+
+def curve_regression(x, a, b, c):
+    return a*np.log2(c+x)+b
+
+#base_node = nodes[0]['url']
 
 #
 # curl -X POST -H "Content-Type: application/json" -d '{"method":"call","params":[0,"get_chain_properties",[]],"id":1}' "https://testnet-node.karma.red"
