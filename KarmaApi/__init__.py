@@ -20,7 +20,10 @@ known_chains['KarmaTest']['prefix'] = 'KRMT'
 known_chains['KarmaTest']['chain_id'] = 'e81bea67cebfe8612010fc7c26702bce10dc53f05c57ee6d5b720bbe62e51bef'
 
 urls = ['ws://localhost']
-ports = [8090, 8091, 8092, 8093, 8094, 8095, 8096, 8097, 8098, 8099]
+
+ports = [8090, 8091, 8092, 8093, 8094, 8095, 8096, 8097, 8098, 8099,
+         8190, 8191, 8192, 8193, 8194, 8195, 8196, 8197, 8198, 8199]
+
 accounts = ['bench-mark', 'bench-mark1', 'bench-mark2',
             'bench-mark3', 'bench-mark10',
             'bench-mark11', 'bench-mark12',
@@ -32,7 +35,7 @@ def makeNodes(count):
     nodes = []
     for i in range(0,count):
         url = urls[int(np.random.randint(len(urls)))]
-        port = ports[ np.random.randint(len(ports))]
+        port = ports[np.random.randint(len(ports))]
         url = '%s:%s' % (url, port)
         _from = accounts[int(np.random.randint(len(accounts)))]
         _to = accounts[int(np.random.randint(len(accounts)))]

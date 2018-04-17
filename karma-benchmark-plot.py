@@ -60,6 +60,9 @@ if __name__ == '__main__':
     f = 'f(x) = %0.4f + %.4f*x; corr=%.4f, p=%.4f, err=%.4f' % (intercept, slope, r_value, p_value, std_err)
     print(f)
 
+    my_dpi = 96
+    plt.figure(figsize=(1200 / my_dpi, 600 / my_dpi), dpi=my_dpi).show()
+
     a = popt[0]
     b = popt[1]
     c = popt[2]
@@ -72,5 +75,9 @@ if __name__ == '__main__':
     xdata = np.linspace(x[0], x[-1], 100)
     plt.plot(xdata, curve_regression(xdata, *popt), 'b-', label=ex)
 
+    plt.title('Karma Core Benchmark: %s hopes per wallet' % hopes)
+    plt.xlabel('count of nodes process transactions ')
+    plt.ylabel('transactions per seconds')
     plt.legend()
+
     plt.show()

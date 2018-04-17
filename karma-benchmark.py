@@ -17,10 +17,9 @@ import json
 #
 
 
-srcHops = 1
+srcHopes = 20
 
-srcNodes = makeNodes(5)
-
+srcNodes = makeNodes(50)
 
 walletPasswd = 'prosto-passwd'
 asset = 'KRMT'
@@ -34,7 +33,7 @@ def transactionBilder(apis, nodes):
 
     print(".", end='')
     count = 0
-    hops = int(srcHops / len(nodes))
+    hops = int(srcHopes / len(nodes))
 
     if hops <= 0:
         hops = 1
@@ -186,7 +185,7 @@ if __name__ == '__main__':
         x.append(p['x'])
         y.append(p['y'])
 
-    linear_file_name = './linear_h:%s_n:%s.json' % (srcHops, len(srcNodes))
+    linear_file_name = './linear_h:%s_n:%s.json' % (srcHopes, len(srcNodes))
 
     linear_json = '{"x": %s, "y": %s}' % (json.dumps(x), json.dumps(y))
 
