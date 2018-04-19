@@ -1,6 +1,6 @@
 __author__ = 'denn'
 
-from KarmaApi import nodes as srcNodes
+from KarmaApi import makeNodes
 from bitshares import BitShares
 from bitsharesbase.account import PrivateKey, PasswordKey
 
@@ -9,7 +9,7 @@ asset = 'KRMT'
 amount = 10
 karmaAccount = 'karma'
 
-karma = BitShares(srcNodes[0]['url'], nobroadcast=False, expiration=30000)
+karma = BitShares('wss://testnet-node.karma.red', nobroadcast=False, expiration=30000)
 karma.wallet.unlock(walletPasswd)
 
 try:
@@ -21,7 +21,10 @@ except:
     print('key already added')
     pass
 
-benchAccounts = ['bench-mark','bench-mark1','bench-mark2','bench-mark3','bench-mark10','bench-mark11','bench-mark12','bench-mark13']
+#karma.transfer('airdrop-japan', 425000, asset, account=karmaAccount)
+
+benchAccounts = ['bench-mark', 'bench-mark1', 'bench-mark2', 'bench-mark3',
+                 'bench-mark10', 'bench-mark11', 'bench-mark12', 'bench-mark13']
 
 for a in benchAccounts:
     karma.transfer(a, amount, asset, account=karmaAccount)

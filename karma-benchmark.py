@@ -29,7 +29,8 @@ amount = '0.01'
 # Utils
 #
 
-def transactionBilder(apis, nodes):
+def transactionBilder(nodes):
+    apis = {}
 
     print(".", end='')
     count = 0
@@ -39,7 +40,8 @@ def transactionBilder(apis, nodes):
         hops = 1
 
     for n in nodes:
-        api = apis[n['url']]
+        api = BitShares(n['url'], nobroadcast=False, expiration=30000)
+        apis[n['url']] = api
         api.wallet.unlock(walletPasswd)
 
         try:
@@ -56,7 +58,7 @@ def transactionBilder(apis, nodes):
             sys.stdout.flush()
             count += 1
 
-    return count
+    return apis, count
 
 def transactionExec(transactions, api):
 
@@ -69,17 +71,6 @@ def transactionExec(transactions, api):
 
         print(".", end='')
         sys.stdout.flush()
-
-
-def createApis(nodes):
-    apis = {}
-
-    for n in nodes:
-        bts = BitShares(n['url'], nobroadcast=False, expiration=30000)
-        print('add node: ', bts.rpc.url)
-        apis[n['url']] = bts
-
-    return apis
 
 
 def startTransaction(apis, nodes):
@@ -122,14 +113,12 @@ def testUserAccount(instance):
 
 def runBenchFor(nodes):
 
-    apis = createApis(nodes)
-
     #
     # Test trx time
     #
     print('Trx building', end='')
     t0 = time.time()
-    count = transactionBilder(apis, nodes)
+    apis, count = transactionBilder(nodes)
     t1 = time.time()
     print('done')
 
