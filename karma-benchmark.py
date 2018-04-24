@@ -29,11 +29,19 @@ amount = '0.01'
 # Utils
 #
 
+try:
+    karma = BitShares('wss://testnet-node.karma.red', nobroadcast=False, expiration=30000)
+    karma.wallet.create(walletPasswd)
+except Exception as err:
+    print('wallet already created')
+
 def transactionBilder(nodes):
     apis = {}
 
     print(".", end='')
+
     count = 0
+
     hops = int(srcHopes / len(nodes))
 
     if hops <= 0:
