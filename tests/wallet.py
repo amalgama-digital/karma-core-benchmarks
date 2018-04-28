@@ -11,6 +11,7 @@ amount = 10
 karmaAccount = 'karma'
 
 karma = BitShares('wss://testnet-node.karma.red', nobroadcast=False, expiration=30000)
+#karma = BitShares('ws://localhost:8090', nobroadcast=False, expiration=30000)
 try:
     karma.wallet.create(walletPasswd)
 except Exception as err:
