@@ -2,16 +2,20 @@ __author__ = 'denn'
 
 from KarmaApi import makeNodes
 from bitshares.account import Account
+from bitshares.asset import Asset
 from bitshares.instance import set_shared_bitshares_instance
 from bitsharesbase.account import PrivateKey, PasswordKey
 from bitshares import BitShares
 
-karma = BitShares('ws://192.168.11.10:8090', nobroadcast=False, expiration=30000)
+#karma = BitShares('ws://localhost:8090', nobroadcast=False, expiration=30000)
+karma = BitShares('wss://testnet-node.karma.red', nobroadcast=False, expiration=30000)
 
 account = Account('karma', bitshares_instance=karma)
 
-for a in account.history():
-    print(a)
+#asset = Asset('1.3.1', bitshares_instance=karma)
+
+for a in account.history(limit=10):
+   print(a)
 
 # core_unit = 'KRMT'
 #

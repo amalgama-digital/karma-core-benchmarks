@@ -22,7 +22,7 @@ karma.wallet.unlock(walletPasswd)
 try:
     name = karmaAccount
     #wif = PasswordKey(name, walletPasswd, role="active").get_private_key()
-    wif = '5JHC4d9USEWosKsdcQPc9oGbUArgqtMYyHUE68JGf6bN6PvJ94m'
+    wif = '<>'
     karma.wallet.addPrivateKey(wif)
 except:
     print('key already added')
